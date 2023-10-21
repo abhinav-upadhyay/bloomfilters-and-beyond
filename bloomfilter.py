@@ -15,11 +15,18 @@ class BloomFilter:
         # Initialize a bytearry with all zeros
         self.bit_vector = bytearray(([0] * num_bytes))
 
+        self.hash_functions = [hashlib.sha256,
+                               hashlib.sha1,
+                               hashlib.md5,
+                               hashlib.sha384,
+                               hashlib.sha512]
+
+
     def _hash(self, data: str, seed: int) -> int:
-        hasher = hashlib.sha256()
+        hasher = self.hash_functions[seed % len(self.hash_functions)]()
         hasher.update(data.encode('utf-8'))
         digest = int(hasher.hexdigest(), 16)
-        return (digest + seed) % self.size
+        return digest % self.size
 
     def add(self, item: str) -> None:
         for i in range(self.nhash):
