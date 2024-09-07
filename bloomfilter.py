@@ -40,7 +40,7 @@ class BloomFilter:
             index = self._hash(item, seed=i)
             byte_index, bit_index = divmod(index, 8)
             mask = 1 << bit_index
-            return not ((self.bit_vector[byte_index] & mask) == 0)
+            return (self.bit_vector[byte_index] & mask) != 0
 
 if __name__ == "__main__":
     filter_size = 128
